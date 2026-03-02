@@ -74,6 +74,30 @@ public final class QuantityLength {
                 this.toBaseUnit() - other.toBaseUnit()) < EPSILON;
     }
 
+    public static QuantityLength add(
+            QuantityLength q1,
+            QuantityLength q2) {
+
+        if (q1 == null || q2 == null) {
+            throw new IllegalArgumentException("Operands cannot be null.");
+        }
+
+        if (!Double.isFinite(q1.value) || !Double.isFinite(q2.value)) {
+            throw new IllegalArgumentException("Values must be finite.");
+        }
+
+        double base1 = q1.unit.toFeet(q1.value);
+        double base2 = q2.unit.toFeet(q2.value);
+        double sumInFeet = base1 + base2;
+        double resultValue = q1.unit.fromFeet(sumInFeet);
+
+        return new QuantityLength(resultValue, q1.unit);
+    }
+
+    public QuantityLength add(QuantityLength other) {
+        return add(this, other);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(toBaseUnit());
