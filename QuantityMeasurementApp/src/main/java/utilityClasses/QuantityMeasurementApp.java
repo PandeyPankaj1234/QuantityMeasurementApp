@@ -42,5 +42,10 @@ public class QuantityMeasurementApp {
                 demonstrateEquality(w1, w2);
                 demonstrateConversion(w1, WeightUnit.GRAM);
                 demonstrateAddition(w1, w2, WeightUnit.KILOGRAM);
+                Quantity<VolumeUnit> v1 = new Quantity<>(1.0, VolumeUnit.LITRE);
+
+                Quantity<VolumeUnit> v2 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
+
+                demonstrateEquality(v1, v2);
         }
 }
