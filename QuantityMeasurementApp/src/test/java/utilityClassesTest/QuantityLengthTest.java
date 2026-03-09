@@ -1,8 +1,9 @@
-package utilityClasses;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+package utilityClassesTest;
 
 import org.junit.jupiter.api.Test;
+
+import utilityClasses.LengthUnit;
+import utilityClasses.QuantityLength;
 
 import static org.junit.jupiter.api.Assertions.*;
 
