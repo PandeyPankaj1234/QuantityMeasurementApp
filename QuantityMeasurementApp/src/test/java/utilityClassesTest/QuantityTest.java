@@ -1,12 +1,9 @@
 package utilityClassesTest;
+
+import utilityClasses.*;
 import org.junit.jupiter.api.Test;
 
-import utilityClasses.LengthUnit;
-import utilityClasses.Quantity;
-import utilityClasses.VolumeUnit;
-import utilityClasses.WeightUnit;
-
-import static org.junit.jupiter.api.Assertions.*; 
+import static org.junit.jupiter.api.Assertions.*;
 
 class QuantityTest {
 
