@@ -25,7 +25,6 @@ public class QuantityMeasurementApp {
 
         public static void main(String[] args) {
 
-                // Length Example
                 Quantity<LengthUnit> l1 = new Quantity<>(1.0, LengthUnit.FEET);
 
                 Quantity<LengthUnit> l2 = new Quantity<>(12.0, LengthUnit.INCH);
@@ -34,7 +33,6 @@ public class QuantityMeasurementApp {
                 demonstrateConversion(l1, LengthUnit.INCH);
                 demonstrateAddition(l1, l2, LengthUnit.FEET);
 
-                // Weight Example
                 Quantity<WeightUnit> w1 = new Quantity<>(1.0, WeightUnit.KILOGRAM);
 
                 Quantity<WeightUnit> w2 = new Quantity<>(1000.0, WeightUnit.GRAM);
@@ -47,5 +45,21 @@ public class QuantityMeasurementApp {
                 Quantity<VolumeUnit> v2 = new Quantity<>(1000.0, VolumeUnit.MILLILITRE);
 
                 demonstrateEquality(v1, v2);
+
+                Quantity<LengthUnit> l4 = new Quantity<>(10.0, LengthUnit.FEET);
+                Quantity<LengthUnit> l6 = new Quantity<>(6.0, LengthUnit.INCH);
+
+                System.out.println("Subtract: " + l1.subtract(l2));
+                System.out.println("Subtract (explicit inches): "
+                                + l4.subtract(l6, LengthUnit.INCH));
+
+                System.out.println("Divide: "
+                                + l1.divide(new Quantity<>(2.0, LengthUnit.FEET)));
+
+                Quantity<WeightUnit> w5 = new Quantity<>(10.0, WeightUnit.KILOGRAM);
+                Quantity<WeightUnit> w8 = new Quantity<>(5.0, WeightUnit.KILOGRAM);
+
+                System.out.println("Weight division: "
+                                + w5.divide(w8));
         }
 }
