@@ -1,4 +1,10 @@
-package utilityClasses;
+package Main;
+
+import utilityClasses.IMeasurable;
+import utilityClasses.LengthUnit;
+import utilityClasses.Quantity;
+import utilityClasses.VolumeUnit;
+import utilityClasses.WeightUnit;
 
 public class QuantityMeasurementApp {
 
