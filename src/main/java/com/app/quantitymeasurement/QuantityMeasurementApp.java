@@ -6,6 +6,7 @@ import com.app.quantitymeasurement.entity.QuantityMeasurementEntity;
 import com.app.quantitymeasurement.repository.IQuantityMeasurementRepository;
 import com.app.quantitymeasurement.repository.QuantityMeasurementCacheRepository;
 import com.app.quantitymeasurement.repository.QuantityMeasurementDatabaseRepository;
+import com.app.quantitymeasurement.service.QuantityMeasurementServiceImpl;
 import com.app.quantitymeasurement.util.ApplicationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,11 +1,7 @@
 package org.example;
-import org.junit.jupiter.api.Test;
 
-import com.app.quantitymeasurement.entity.QuantityDTO.TemperatureUnit;
-import com.app.quantitymeasurement.entity.QuantityDTO.VolumeUnit;
-import com.app.quantitymeasurement.unit.LengthUnit;
-import com.app.quantitymeasurement.unit.Quantity;
-import com.app.quantitymeasurement.unit.WeightUnit;
+import UtilityClasses.*;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 

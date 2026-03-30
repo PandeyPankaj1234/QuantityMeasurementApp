@@ -23,15 +23,22 @@ public class ConnectionPool {
     private final int poolSize;
 
     private ConnectionPool() {
+        try {
+            Class.forName("org.h2.Driver"); // ✅ FIX 1
+        } catch (ClassNotFoundException e) {
+            throw new DatabaseException("H2 Driver not found", e);
+        }
+
         ApplicationConfig config = ApplicationConfig.getInstance();
         this.url = config.getDbUrl();
         this.username = config.getDbUsername();
         this.password = config.getDbPassword();
         this.poolSize = config.getPoolSize();
+
         initializePool();
     }
 
-    public static ConnectionPool getInstance() {
+    public static synchronized ConnectionPool getInstance() { // ✅ FIX 2
         if (instance == null)
             instance = new ConnectionPool();
         return instance;
@@ -51,7 +58,17 @@ public class ConnectionPool {
     public synchronized Connection acquireConnection() {
         if (available.isEmpty())
             throw new DatabaseException("Connection pool exhausted");
+
         Connection conn = available.remove(available.size() - 1);
+
+        try {
+            if (conn.isClosed()) { // ✅ FIX 3
+                conn = DriverManager.getConnection(url, username, password);
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to validate connection", e);
+        }
+
         inUse.add(conn);
         return conn;
     }
