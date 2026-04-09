@@ -13,6 +13,7 @@ public class Quantity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "value_col")  
     private double value;
     private String unit;
 }

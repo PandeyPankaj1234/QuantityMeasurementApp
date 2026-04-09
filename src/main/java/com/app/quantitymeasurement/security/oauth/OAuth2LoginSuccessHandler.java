@@ -15,60 +15,66 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final UserRepository userRepository;
-    private final JwtService jwtService;
+        private final UserRepository userRepository;
+        private final JwtService jwtService;
 
-    public OAuth2LoginSuccessHandler(UserRepository userRepository, JwtService jwtService) {
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-    }
+        // ✅ Change this to 3000 if you ever run the old Angular setup
+        private static final String FRONTEND_ORIGIN = "http://localhost:5173";
 
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-
-        String email = oAuth2User.getAttribute("email");
-        String name = oAuth2User.getAttribute("name");
-
-        if (email == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Email not found from OAuth2 provider");
-            return;
+        public OAuth2LoginSuccessHandler(UserRepository userRepository, JwtService jwtService) {
+                this.userRepository = userRepository;
+                this.jwtService = jwtService;
         }
 
-        User appUser = userRepository.findByEmail(email).orElseGet(() ->
-                userRepository.save(new User(
-                        name == null ? "Google User" : name,
-                        email,
-                        null,
-                        Role.USER,
-                        "GOOGLE"
-                ))
-        );
+        @Override
+        public void onAuthenticationSuccess(HttpServletRequest request,
+                        HttpServletResponse response,
+                        Authentication authentication) throws IOException, ServletException {
 
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-                appUser.getEmail(),
-                "",
-                Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + appUser.getRole().name()))
-        );
+                OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
-        String token = jwtService.generateToken(userDetails);
-//        response.setContentType("application/json");
-//        response.setCharacterEncoding("UTF-8");
-//        response.getWriter().write(
-//                "{\"token\":\"" + token +
-//                        "\",\"email\":\"" + appUser.getEmail() +
-//                        "\",\"name\":\"" + appUser.getName() + "\"}"
-//        );
-        // Redirect to your frontend with the token
-        response.sendRedirect("http://localhost:3000/oauth2/success?token=" + token
-                + "&email=" + appUser.getEmail()
-                + "&name=" + appUser.getName());
-    }
+                String email = oAuth2User.getAttribute("email");
+                String name = oAuth2User.getAttribute("name");
+
+                if (email == null) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                                        "Email not found from OAuth2 provider");
+                        return;
+                }
+
+                User appUser = userRepository.findByEmail(email).orElseGet(() -> userRepository.save(new User(
+                                name == null ? "Google User" : name,
+                                email,
+                                null,
+                                Role.USER,
+                                "GOOGLE")));
+
+                UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                                appUser.getEmail(),
+                                "",
+                                Collections.singletonList(
+                                                new SimpleGrantedAuthority("ROLE_" + appUser.getRole().name())));
+
+                String token = jwtService.generateToken(userDetails);
+
+                // URL-encode name to handle spaces / special chars safely
+                String encodedName = URLEncoder.encode(
+                                appUser.getName() == null ? "" : appUser.getName(),
+                                StandardCharsets.UTF_8);
+
+                // ✅ Redirect to Vite frontend's /oauth2/success callback
+                response.sendRedirect(
+                                FRONTEND_ORIGIN + "/oauth2/success"
+                                                + "?token=" + token
+                                                + "&email="
+                                                + URLEncoder.encode(appUser.getEmail(), StandardCharsets.UTF_8)
+                                                + "&name=" + encodedName);
+        }
 }
