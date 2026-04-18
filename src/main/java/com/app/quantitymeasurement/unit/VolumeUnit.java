@@ -12,28 +12,9 @@ public enum VolumeUnit implements IMeasurable {
         this.conversionFactorToLitre = conversionFactorToLitre;
     }
 
-    @Override
-    public double getConversionFactor() {
-        return conversionFactorToLitre;
-    }
-
-    @Override
-    public double convertToBaseUnit(double value) {
-        return value * conversionFactorToLitre;
-    }
-
-    @Override
-    public double convertFromBaseUnit(double base) {
-        return base / conversionFactorToLitre;
-    }
-
-    @Override
-    public String getUnitName() {
-        return name();
-    }
-
-    @Override
-    public String getMeasurementType() {
-        return "VOLUME";
-    }
+    @Override public double getConversionFactor()            { return conversionFactorToLitre; }
+    @Override public double convertToBaseUnit(double value)  { return value * conversionFactorToLitre; }
+    @Override public double convertFromBaseUnit(double base) { return base / conversionFactorToLitre; }
+    @Override public String getUnitName()                    { return name(); }
+    @Override public String getMeasurementType()             { return "VOLUME"; }
 }

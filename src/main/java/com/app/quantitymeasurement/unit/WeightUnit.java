@@ -12,28 +12,9 @@ public enum WeightUnit implements IMeasurable {
         this.conversionFactorToKilogram = conversionFactorToKilogram;
     }
 
-    @Override
-    public double getConversionFactor() {
-        return conversionFactorToKilogram;
-    }
-
-    @Override
-    public double convertToBaseUnit(double value) {
-        return value * conversionFactorToKilogram;
-    }
-
-    @Override
-    public double convertFromBaseUnit(double base) {
-        return base / conversionFactorToKilogram;
-    }
-
-    @Override
-    public String getUnitName() {
-        return name();
-    }
-
-    @Override
-    public String getMeasurementType() {
-        return "WEIGHT";
-    }
+    @Override public double getConversionFactor()            { return conversionFactorToKilogram; }
+    @Override public double convertToBaseUnit(double value)  { return value * conversionFactorToKilogram; }
+    @Override public double convertFromBaseUnit(double base) { return base / conversionFactorToKilogram; }
+    @Override public String getUnitName()                    { return name(); }
+    @Override public String getMeasurementType()             { return "WEIGHT"; }
 }
